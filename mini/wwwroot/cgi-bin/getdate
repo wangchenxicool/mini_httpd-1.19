@@ -1,0 +1,14 @@
+#!/bin/sh
+
+echo "Content-type: text/html"
+echo
+echo "<HTML><HEAD>"
+echo "<TITLE>Is Laura There?</TITLE>"
+echo "</HEAD><BODY>"
+ison='who | grep lemay'
+if [ ! -z "$ison" ]; then
+        echo "<P>......Laura is logged in"
+else
+        echo "<P>......Laura isn't logged in"
+fi
+echo "</BODY></HTML>"

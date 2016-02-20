@@ -1,0 +1,13 @@
+#!/bin/sh
+
+__readINI() {
+    INIFILE=$1; SECTION=$2; ITEM=$3
+    _readIni=`awk -F '=' '/\['$SECTION'\]/{a=1}a==1&&$1~/'$ITEM'/{print $2;exit}' $INIFILE`
+    echo ${_readIni}
+}
+
+NUM_OF_START=$(__readINI /mnt/reboot.log mtk number_of_starts)
+
+printf "Content-type: application/json\n"
+printf "\n"
+printf "{\n\"code\":\"0\",\n\"data\":{\n\"num_of_start\":\"${NUM_OF_START}\"\n},\n\"details\":\"ok\"\n}\n"

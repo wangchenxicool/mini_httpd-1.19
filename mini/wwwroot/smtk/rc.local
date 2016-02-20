@@ -1,0 +1,30 @@
+# Put your custom commands here that should be executed once
+# the system init finished. By default this file does nothing.
+
+random_mac(){
+local i;
+for i in network.lan network.wan; do
+    local mac;
+    while [ "${#mac}" != "17" ]; do
+        mac=00$(hexdump -n5 -e '/1 ":%02x"' /dev/urandom)
+    done
+    echo ${mac}
+    uci set ${i}.macaddr=${mac}
+    uci commit ${i%%.*}
+    unset mac
+    echo ${i}
+done
+};
+
+insmod /mnt/modules/bb_filter.ko
+insmod /mnt/modules/8188eu.ko
+random_mac
+updata.sh
+nohup scan_version.sh &
+dnsmasq.sh
+record_start.sh
+sleep 5
+uci set wireless.@wifi-device[0].disabled=1; uci commit wireless; wifi
+net_manager.sh
+
+exit 0

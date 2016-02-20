@@ -1,0 +1,4 @@
+#!/bin/sh
+
+echo "[DNSMASQ_INFO]" > /var/log/dnsmasq-dhcp.log
+echo "dnsmasq-dhcp=ok" >> /var/log/dnsmasq-dhcp.log

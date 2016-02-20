@@ -1,0 +1,14 @@
+#!/bin/sh
+
+__readINI() {
+    INIFILE=$1; SECTION=$2; ITEM=$3
+    _readIni=`awk -F '=' '/\['$SECTION'\]/{a=1}a==1&&$1~/'$ITEM'/{print $2;exit}' $INIFILE`
+    echo ${_readIni}
+}
+
+MTK_PKG_LOCAL=$(__readINI /mnt/update/version.ini FILE_INFO mtk_pkg_name)
+MTK_PKG_STS=$(__readINI /mnt/update/version.ini FILE_INFO is_update)
+
+printf "Content-type: application/json\n"
+printf "\n"
+printf "{\n\"code\":\"0\",\n\"data\":{\n\"version\":\"${MTK_PKG_LOCAL}\",\n\"wait_update\":\"${MTK_PKG_STS}\"\n},\n\"details\":\"0--already update, 1--wait updte\"\n}\n"
